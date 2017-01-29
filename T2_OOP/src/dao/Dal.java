@@ -16,15 +16,29 @@ import java.util.Map;
  */
 public class Dal
 {
+    private static Dal instance = new Dal();
+
     private Map<String, Category> categories = new HashMap<String, Category>();
     private Map<SportEquipment, Integer> goods = new HashMap<SportEquipment, Integer>();
 
-    public Dal()throws Exception
+    private Dal()
     {
-        loadInitFile();
+        try
+        {
+            loadInitFile();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void loadInitFile()throws Exception
+    public static Dal getInstance()
+    {
+        return instance;
+    }
+
+    private void loadInitFile() throws Exception
     {
         String filePath = new File("src/init.xml").getAbsolutePath();
         File file = new File(filePath);
@@ -32,21 +46,21 @@ public class Dal
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
         NodeList categoryList = document.getElementsByTagName("category");
-        for(int i =0; i<categoryList.getLength();i++)
+        for (int i = 0; i < categoryList.getLength(); i++)
         {
             String categoryName = categoryList.item(i).getTextContent();
             //This class is used here only because it was indicated in the task as a property of the bean.SportEquipment Class.
             Category category = new Category(categoryName);
-            this.categories.put(categoryName,category);
+            this.categories.put(categoryName, category);
         }
         NodeList equipmentList = document.getElementsByTagName("equipment");
-        for(int i =0; i<equipmentList.getLength();i++)
+        for (int i = 0; i < equipmentList.getLength(); i++)
         {
             String categoryName = equipmentList.item(i).getAttributes().getNamedItem("category").getNodeValue();
             String title = equipmentList.item(i).getAttributes().getNamedItem("title").getNodeValue();
             int price = Integer.parseInt(equipmentList.item(i).getAttributes().getNamedItem("price").getNodeValue());
             int numberOfUnits = Integer.parseInt(equipmentList.item(i).getAttributes().getNamedItem("numberOfUnits").getNodeValue());
-            SportEquipment unit = new SportEquipment(this.categories.get(categoryName),title, price);
+            SportEquipment unit = new SportEquipment(this.categories.get(categoryName), title, price);
             this.goods.put(unit, numberOfUnits);
         }
     }
