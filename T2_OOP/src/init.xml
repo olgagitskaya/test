@@ -10,4 +10,5 @@
         <equipment category="indoors" title="treadmill" price="4" numberOfUnits="1"/>
         <equipment category="indoors" title="elliptical_trainer" price="4" numberOfUnits="2"/>
     </SportEquipment>
+    <test><test/>
 </shop>
