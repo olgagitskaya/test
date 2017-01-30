@@ -47,7 +47,7 @@ public class Shop {
 
     public void initialize()throws Exception
     {
-        Dal dal = new Dal();
+        Dal dal = Dal.getInstance();
         this.goods = dal.getGoods();
         this.categories = dal.getCategories();
     }
